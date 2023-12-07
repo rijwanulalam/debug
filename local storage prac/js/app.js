@@ -32,7 +32,7 @@ const saveProductToLocalStorage = (product, quantity) => {
 
 const displayProductFromLocalStorage = () => {
     const savedCart = getStoredShoppingCart();
-    console.log(savedCart)
+    // console.log(savedCart)
     for(const product in savedCart){
         const quantity = savedCart[product]
         displayProducts(product, quantity);

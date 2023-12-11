@@ -1,4 +1,5 @@
 const loadPhones = async(searchText, dataLimit) =>{
+    toggleSpinner(true);
     const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
     const res = await fetch(url);
     const data = await res.json();
@@ -48,7 +49,7 @@ const displayPhones = (phones, dataLimit) =>{
         phonesContainer.appendChild(phoneDiv);
     });
     // stop spinner or loader
-    // toggleSpinner(false);
+    toggleSpinner(false);
 }
 
 const processSearch = (dataLimit) =>{
@@ -61,19 +62,21 @@ const processSearch = (dataLimit) =>{
 // handle search button click
 document.getElementById('btn-search').addEventListener('click', function(){
     // start loader
+    toggleSpinner(true);
     processSearch(10);
 })
 
 // search input field enter key handler
 document.getElementById('search-field').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
+        toggleSpinner(true);
         processSearch(10);
     }
 });
 
 const toggleSpinner = isLoading => {
     const loaderSection = document.getElementById('loader');
-    if(!isLoading){
+    if(isLoading){
         loaderSection.classList.remove('d-none')
     }
     else{
@@ -84,28 +87,33 @@ const toggleSpinner = isLoading => {
 
 // not the best way to load show All
 document.getElementById('btn-show-all').addEventListener('click', function(){
+    toggleSpinner(true);
     processSearch();
 })
 
 const loadPhoneDetails = async id =>{
-    const url =`www.openapi.programming-hero.com/api/phone/${id}`;
+    toggleSpinner(true);
+    const url =`https://openapi.programming-hero.com/api/phone/${id}`;
+    // console.log(url)
     const res = await fetch(url);
     const data = await res.json();
     displayPhoneDetails(data.data);
+    
 }
 
 const displayPhoneDetails = phone =>{
-    console.log(phone);
+    // console.log(phone);
     const modalTitle = document.getElementById('phoneDetailModalLabel');
+    console.log(modalTitle)
     modalTitle.innerText = phone.name;
     const phoneDetails = document.getElementById('phone-details');
-    console.log(phone.mainFeatures.sensors[0]);
+    // console.log(phone.mainFeatures.sensors[0]);
     phoneDetails.innerHTML = `
         <p>Release Date: ${phone.releaseDate}</p>
-        <p>Storage: ${phone.mainFeatures}</p>
+        <p>Storage: ${phone.mainFeatures.storage}</p>
         <p>Others: ${phone.others ? phone.others.Bluetooth : 'No Bluetooth Information'}</p>
         <p>Sensor: ${phone.mainFeatures.sensors ? phone.mainFeatures.sensors[0] : 'no sensor'}</p>
     `
 }
 
-loadPhones('apple', 10);
+loadPhones('apple');

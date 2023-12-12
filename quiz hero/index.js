@@ -96,6 +96,8 @@ const displayQuiz = (data) => {
 // // document.querySelector("#submit").addEventlistener("click", () =>
 document.querySelector("#submit").addEventListener("click", ()=> {
   if (answers.length < 6) {
+    const btnSumbit = document.querySelector("#submit");
+    // btnSumbit.classList.add("disabled");
     return;
   }
   quizTimer(true);
